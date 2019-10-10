@@ -1,15 +1,28 @@
 <!-- templates/base.html -->
+
 <!doctype html>
 <html>
 <head>
-  <meta charset='utf-8'>
-  <title>Contractor</title>
+    <meta charset='utf-8'>
+    <title>Pantry</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='https://bootswatch.com/4/cyborg/bootstrap.min.css'>
 </head>
 <body>
-
-    {% block content %}
-        BODY CONTENT GOES HERE
-    {% endblock %}
-
+    <div class='container'>
+        
+    {% include 'partials/navbar.html' %}
+    {% block content %}{% endblock %}
+    </div>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<!-- Footer -->
+<footer class='page-footer font-small blue pt-4'>
+        
+        <div class='footer-copyright text-center py-3'>© 2018 Copyright:
+           <a href='https://mdbootstrap.com/education/bootstrap/'> MDBootstrap.com</a>
+        </div>
+    </footer>
 </body>
 </html>

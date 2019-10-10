@@ -5,6 +5,12 @@ from datetime import datetime
 import os
 
 app = Flask(__name__)
+
+host = os.environ.get("MONGODB_URI", "mongodb://localhost:27017/my_app_db")
+client = MongoClient(host=f"{host}?retryWrites=false")
+db = client.get_default_database()
+pantry = db.pantry
+
 @app.route("/")
 def pantry_index():
     """Return homepage"""
@@ -15,7 +21,7 @@ def pantry_index():
 def new_item():
     """Return new listing creation page"""
     return render_template("pantry_new.html", item={},
-                           title='New listing')
+                           title='New item')
 
 
 @app.route("/pantry/new", methods=["POST"])
@@ -23,11 +29,11 @@ def pantry_new():
     """Allow the user to create a new listing"""
     item = {
         "food name": request.form.get("name"),
-        "picture": request.form.get("picture"),
+        "image": request.form.get("image"),
         "price": request.form.get("price"),
         "description": request.form.get("description")
     }
-    listing_id = pantry.insert_one(pantry).inserted_id
+    item_id = pantry.insert_one(pantry).inserted_id
     return redirect(url_for("pantry_show", item_id=item_id))
 
 
@@ -43,7 +49,7 @@ def pantry_update(item_id):
     """Submit an edited listing."""
     item_updated = {
         "food name": request.form.get("name"),
-        "picture": request.form.get("picture"),
+        "image": request.form.get("image"),
         "price": request.form.get("price"),
         "description": request.form.get("description")
     }
