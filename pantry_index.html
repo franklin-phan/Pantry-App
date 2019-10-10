@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        {% for listing in listings %}
+            <div class='col-md-3'>
+                <h1><a href='/pantry/{{ listing._id }}'>{{ pantry.name }}</a></h1>
+                <p><img src="{{ pantry.image }}" alt="The Pantry is empty." width="50" height="50"></p>
+                <h2>${{ pantry.price }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+
+    <form action="/listings/new">
+        <input type="submit" value="New Listing">
+    </form>
+{% endblock %}
