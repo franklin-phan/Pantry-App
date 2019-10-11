@@ -1,0 +1,24 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <div class='row'>
+        {% for item in cart %}
+            <div class='col-md-3'>
+                <h1><a href='pantry/cart/{{ cart_item._id }}'>{{ item.name }}</a></h1>
+                <p><img src="{{ cart_item.image }}" alt="No Image Found" width="50" height="50"></p>
+                <h2>${{ item.price }}</h2>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <form action="pantry/cart/destroy">
+        <button type="submit">Empty Cart</button>
+    </form>
+
+    <form action="pantry/cart/checkout">
+        <button type="submit">Checkout</button>
+    </form>
+{% endblock %}

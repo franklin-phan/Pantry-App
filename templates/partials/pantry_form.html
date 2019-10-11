@@ -2,7 +2,7 @@
     <legend>{{title}}</legend>
     <!-- NAME -->
     <div class="form-group">
-        <label for="list-name">Name</label><br>
+        <label for="list-name">Food Name</label><br>
         <input id="list-name" type="text" name="name" value="{{ item.name }}"/>
     </div>
 
@@ -10,16 +10,15 @@
     <div class="form-group">
     <form action="upload.php" method="post" enctype="multipart/form-data">
         Select image to upload:
-        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="file" name="fileToUpload" id="{{ item.image }}">
     </form>
     </div>
     
     <!-- IMAGE -->
     <div class="form-group">
         <label for="list-image">Link image</label><br>
-        <input id="list-image" type="text" name="image" value="{{ item.image }}">
+        <input id="list-image" type="text" name="image" value="{{ item.link }}">
     </div>
-    </fieldset>
 
     <!-- PRICE -->
     <div class="form-group">
@@ -32,9 +31,6 @@
         <label for="list-description">Description and Quantity</label><br>
         <input id="list-description" type="text" name="description" value="{{ item.description }}"/>
     </div>
+</fieldset>
 
-    <!-- BUTTON -->
-    <div class="form-group">
-        <button type="submit" formaction="/" formmethod="GET">Cancel</button>
-        <button type="submit">Save item</button>
-    </div>
+    

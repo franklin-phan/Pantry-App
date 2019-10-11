@@ -8,15 +8,15 @@
         <div class='col-sm-6 col-sm-offset-3'>
             <h1>{{ item.name }}</h1>
             <img src="{{ item.image }}" alt="Item Image" width="350" height="350">
-            <h2>${{ listing.price }}</h2>
+            <h2>${{ item.price }}</h2>
 
             <p><form action="/pantry/{{ item._id }}/edit">
                 <button type="submit">Edit</button>
             </form></p>
-            <p><form method='POST' action='/listings/{{ listing._id }}/delete'>
+            <p><form method='POST' action='/pantry/{{ item._id }}/delete'>
                 <button type='submit'>Delete</button>
             </form></p>
-            <p><form method='POST' action='/listings/{{ listing._id }}/add-to-cart'>
+            <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
                 <label for="quant">Quantity: </label>
                 <input type="text" id="quant" name="quant">
                 <button type='submit'>Add to Cart</button>
