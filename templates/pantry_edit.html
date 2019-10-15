@@ -1,16 +1,13 @@
 <!-- templates/pantry_edit.html -->
 {% extends 'base.html' %}
 
-{% block content %}
+{% block title %}Edit Item{% endblock %}
+
+{% block body %}
 <div class='row'>
     <div class='col-sm-6 col-sm-offset-3'>
-        <form method='POST' action='/pantry/{{itemt._id}}'>
-            <input type='hidden' name='_method' value='PUT'/>
+        <form method='POST' action='/pantry/{{item._id}}'>
             {% include 'partials/pantry_form.html' %}
-            <!-- BUTTON -->
-            <div class='form-group'>
-                <button class='btn btn-primary' type='submit'>Save item</button>
-            </div>
         </form>
     </div>
 </div>

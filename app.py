@@ -10,72 +10,71 @@ host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/Contractor')
 
 client = MongoClient(host=f'{host}?retryWrites=false')  
 db = client.get_default_database()
-pantry = db.playlists
+pantry = db.pantry
 item = db.item
 cart = db.cart
 #Return pantry
-@app.route("/",methods=['GET'])
+@app.route('/')
 def pantry_index():
-    """Return Pantry"""
-    
-   
-    
-    return render_template("pantry_index.html", item=list(item.find()))
+    """Show all pantry items."""
+    return render_template('pantry_index.html', pantry=pantry.find())
 
-
-
-
-#Posting page
-@app.route("/pantry/new", methods=["POST", 'GET'])
+@app.route('/pantry/new')
 def pantry_new():
-    if request.method == 'POST':
-        item = {
-            "name": request.form['name'],
-            "image": request.form['link'],
-            "price": request.form['price'],
-            "description and quantity": request.form['description']
-            }
-        
-        item_id = pantry.insert_one(item).inserted_id
-        return redirect(url_for("pantry_show", item_id=item_id))
-        # return redirect(url_for("pantry_show", item=item.find()))
-       
-    if request.method == "GET":
-        return render_template("pantry_new.html")
+    """Create a new pantry item."""
+    return render_template('pantry_new.html', item={}, title='New Item')
 
-#Show single item
-@app.route("/pantry/<item_id>")
+@app.route('/pantry', methods=['POST'])
+def pantry_submit():
+    """Submit a new pantry item."""
+    item = {
+        "name": request.form.get('name'),
+        "image": request.form.get('image'),
+        "price": request.form.get('price'),
+        "description and quantity": request.form.get('description'),
+        'created_at': datetime.now()
+    }
+    print(item)
+    item_id = pantry.insert_one(item).inserted_id
+    return redirect(url_for('pantry_show', item_id=item_id))
+
+# @app.route('/pantry', methods=['GET'])
+# def pantry_homepage():
+#         return render_template('pantry_index.html',item_id=item_id)
+
+
+@app.route('/pantry/<item_id>')
 def pantry_show(item_id):
-    item = pantry.find_one({"_id": ObjectId(item_id)})
-    return render_template("pantry_show.html", item=item)
+    """Show a single pantry item."""
+    item = pantry.find_one({'_id': ObjectId(item_id)})
+    return render_template('pantry_show.html', item=item)
 
-#Submit edited item
+@app.route('/pantry/<item_id>/edit')
+def pantry_edit(item_id):
+    """Show the edit form for a pantry item."""
+    item = pantry.find_one({'_id': ObjectId(item_id)})
+    return render_template('pantry_edit.html', item=item, title='Edit Pantry Item')
+
 @app.route('/pantry/<item_id>', methods=['POST'])
 def pantry_update(item_id):
-    item_updated = {
-        "food name": request.form.get("name"),
-        "image": request.form.get("image"),
-        "price": request.form.get("price"),
-        "description": request.form.get("description")
+    """Submit an edited item."""
+    updated_item = {
+        "name": request.form['name'],
+        "image": request.form['image'],
+        "price": request.form['price'],
+        "description and quantity": request.form['description'],
+        'created_at': datetime.now()
     }
     pantry.update_one(
         {'_id': ObjectId(item_id)},
-        {'$set': item_updated})
-    return redirect(url_for('pantry_show', item_id=item_id))
+        {'$set': updated_item})
+    return redirect(url_for('pantry_show', item_id=item_id, item=item))
 
-#Show the edit form for an item
-@app.route("/pantry/<item_id>/edit")
-def pantry_edit(item_id):
-    item = pantry.find_one({"_id": ObjectId(item_id)})
-    return render_template("pantry_edit.html", item=item,
-                           title="Edit listing")
-
-#Delete an item
 @app.route('/pantry/<item_id>/delete', methods=['POST'])
 def pantry_delete(item_id):
+    """Delete one pantry item."""
     pantry.delete_one({'_id': ObjectId(item_id)})
     return redirect(url_for('pantry_index'))
-
 #Shows cart
 @app.route("/pantry/cart")
 def cart_show():
@@ -113,15 +112,15 @@ def cart_checkout():
 @app.route('/pantry/<cart_item_id>/add-to-cart', methods=['POST'])
 def add_to_cart(cart_item_id):
     cart_item = pantry.find_one({"_id": ObjectId(cart_item_id)})
-    for _ in range(int(request.form.get("quant"))):
-        new_item = {
-            "food name": cart_item["name"],
-            "image": cart_item["image"],
-            "price": cart_item["price"],
-            "description and quantity": cart_item["description"]
-            }
-        cart.insert_one(new_item)
-    return redirect(url_for('show_cart'))
+    # for _ in range(int(request.form.get("quant"))):
+    #     new_item = {
+    #         "food name": cart_item["name"],
+    #         "image": cart_item["image"],
+    #         "price": cart_item["price"],
+    #         "description and quantity": cart_item["description"]
+    #         }
+    cart.insert_one(cart_item)
+    return redirect(url_for('cart_show'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -7,19 +7,18 @@
     <div class='row'>
         <div class='col-sm-6 col-sm-offset-3'>
             <h1>{{ item.name }}</h1>
-            <img src="{{ item.image }}" alt="Item Image" width="350" height="350">
+            <img src="{{ item.image }}" alt="Item Image" width="500" height="500">
             <h2>${{ item.price }}</h2>
+            <h3>{{ item.description }}</h3>
 
             <p><form action="/pantry/{{ item._id }}/edit">
-                <button type="submit">Edit</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
             </form></p>
             <p><form method='POST' action='/pantry/{{ item._id }}/delete'>
-                <button type='submit'>Delete</button>
+                <button type='submit' class="btn btn-primary">Delete</button>
             </form></p>
             <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
-                <label for="quant">Quantity: </label>
-                <input type="text" id="quant" name="quant">
-                <button type='submit'>Add to Cart</button>
+                <button type='submit' class="btn btn-primary">Add to Cart</button>
             </form></p>
         </div>
     </div>

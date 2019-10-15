@@ -23,13 +23,18 @@
     <!-- PRICE -->
     <div class="form-group">
         <label for="list-price">Price</label><br>
-        <input id="list-price" type="text" name="price" value="${{ item.price }}"/>
+        <input id="list-price" type="text" name="price" value="{{ item.price }}"/>
     </div>
     
     <!-- DESCRIPTION -->
     <div class="form-group">
         <label for="list-description">Description and Quantity</label><br>
         <input id="list-description" type="text" name="description" value="{{ item.description }}"/>
+    <!-- BUTTON -->
+    <div class="form-group">
+        <button type="submit" formaction="/pantry" formmethod="GET" class="btn btn-primary">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save item</button>
+    </div>
     </div>
 </fieldset>
 
