@@ -31,7 +31,7 @@ class listingsTests(TestCase):
         app.config['TESTING'] = True
 
     def test_index(self):
-        """Test the listings homepage."""
+        """Test the pantry homepage."""
         result = self.client.get('/')
         self.assertEqual(result.status, '200 OK')
         self.assertIn(b'listing', result.data)
@@ -40,20 +40,20 @@ class listingsTests(TestCase):
         """Test the new listing creation page."""
         result = self.client.get('/pantry/new')
         self.assertEqual(result.status, '200 OK')
-        self.assertIn(b'New listing', result.data)
+        self.assertIn(b'New item', result.data)
 
     @mock.patch('pymongo.collection.Collection.find_one')
-    def test_show_listing(self, mock_find):
+    def test_show_item(self, mock_find):
         """Test showing a single listing."""
         mock_find.return_value = sample_item
 
         result = self.client.get(f'/pantry/{sample_item_id}')
         self.assertEqual(result.status, '200 OK')
-        self.assertIn(b'Clown Nose', result.data)
+        self.assertIn(b'Item', result.data)
 
     @mock.patch('pymongo.collection.Collection.find_one')
-    def test_edit_listing(self, mock_find):
-        """Test editing a single listing."""
+    def test_edit_item(self, mock_find):
+        """Test editing a single item."""
         mock_find.return_value = sample_item
 
         result = self.client.get(f'/pantry/{sample_item_id}/edit')
@@ -61,8 +61,8 @@ class listingsTests(TestCase):
         self.assertIn(b'Spaghetti', result.data)
 
     @mock.patch('pymongo.collection.Collection.insert_one')
-    def test_submit_listing(self, mock_insert):
-        """Test submitting a new listing."""
+    def test_submit_item(self, mock_insert):
+        """Test submitting a new item."""
         result = self.client.post('/pantry/new', data=sample_form_data)
 
         # After submitting, should redirect to that item's page
@@ -70,13 +70,13 @@ class listingsTests(TestCase):
         mock_insert.assert_called_with(sample_item)
 
     @mock.patch('pymongo.collection.Collection.update_one')
-    def test_update_playlist(self, mock_update):
+    def test_update_item(self, mock_update):
         result = self.client.post(f'/pantry/{sample_item_id}', data=sample_form_data)
 
         self.assertEqual(result.status, '302 FOUND')
         mock_update.assert_called_with({'_id': sample_item_id}, {'$set': sample_item})
     @mock.patch('pymongo.collection.Collection.delete_one')
-    def test_delete_playlist(self, mock_delete):
+    def test_delete_item(self, mock_delete):
         form_data = {'_method': 'DELETE'}
         result = self.client.post(f'/pantry/{sample_item_id}/delete', data=form_data)
         self.assertEqual(result.status, '302 FOUND')
