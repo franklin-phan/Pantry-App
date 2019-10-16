@@ -1,0 +1,22 @@
+<div class='row'>
+        <div class="card text-white bg-primary mb-3" style="max-width: 20rem;"><center>
+                <div class="card-header">
+                           <h1 ><a style="color: white;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
+                           <h3 class="card-subtitle text-muted">{{ item.type }}</h3>                       
+
+
+                </div>
+                <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                <div class="card-body">
+                <div class="col">
+                  <h4 class="card-title">Amount: {{ item.amount }}
+                      <div class="form-group">
+                        <button type="submit" formaction="/pantry/{{ item._id }}/edit" class="btn btn-danger btn-lg btn-block">Edit Amount</button>
+                    </div>
+                    </div></h4>
+                  <p class="card-text">{{ item.description }}</p>
+                  <form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
+                    <button type='submit' class="btn btn-secondary btn-lg btn-block">Add to Ingredients</button>
+                </center>
+                </div>
+              </div>

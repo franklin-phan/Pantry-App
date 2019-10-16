@@ -1,0 +1,13 @@
+
+ .row{
+    justify-content: center;
+    
+ }
+.border{
+    padding:1px;
+    border:1px solid #2F4F4F;
+}
+hyperlink {
+    color: blue;
+    background-color: black;
+  }

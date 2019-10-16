@@ -3,23 +3,36 @@
 {% block title %}Item{% endblock %}
 
 {% block body %}
-    <a href='/'>Back to Home</a>
-    <div class='row'>
-        <div class='col-sm-6 col-sm-offset-3'>
-            <h1>{{ item.name }}</h1>
-            <img src="{{ item.image }}" alt="Item Image" width="500" height="500">
-            <h2>${{ item.price }}</h2>
-            <h3>{{ item.description }}</h3>
-
-            <p><form action="/pantry/{{ item._id }}/edit">
-                <button type="submit" class="btn btn-primary">Edit</button>
-            </form></p>
-            <p><form method='POST' action='/pantry/{{ item._id }}/delete'>
-                <button type='submit' class="btn btn-primary">Delete</button>
-            </form></p>
-            <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
-                <button type='submit' class="btn btn-primary">Add to Cart</button>
-            </form></p>
+    <div class='row'><center>
+    <div class="card" style="max-width: 35rem;">
+            <h3 class="card-header">{{ item.name }}</h3>
+            <div class="card-body">
+              <h5 class="card-title">Category: {{ item.type }}</h5>
+            </div>
+            <img style="height: 350px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+            <div class="card-body">
+              <p class="card-text">Description: {{ item.description }}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Amount: {{ item.amount }}</li>
+              <li class="list-group-item">Expiration Date: {{ item.expiration }}</li>
+            </ul>
+            <div class="btn-group" role="group" aria-label="Basic example">
+                    <p><form action='/'>
+                        <button type='submit' class="btn btn-secondary">Back to home</button>
+                    </form></p>
+                    <p><form action="/pantry/{{ item._id }}/edit">
+                        <button type="submit" class="btn btn-secondary">Edit</button>
+                    </form></p>
+                    <p><form method='POST' action='/pantry/{{ item._id }}/delete'>
+                        <button type='submit' class="btn btn-secondary">Delete</button>
+                    </form></p>
+                    <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
+                        <button type='submit' class="btn btn-secondary">Add to Cart</button>
+                    </form></p>
+                </center>
+            </div>
+          </div>
         </div>
-    </div>
+          
 {% endblock %}

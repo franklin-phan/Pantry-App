@@ -1,14 +1,20 @@
   
 {% extends "base.html" %}
 
-{% block title %}New Item{% endblock %}
+{% block title %}Add to My Pantry{% endblock %}
+
 
 {% block body %}
-<div class='row'>
-    <div class='col-sm-6 col-sm-offset-3'>
-        <form method='POST' action='/pantry'>
-            {% include 'partials/pantry_form.html' %}
-        </form>
+<div class="container">
+    <div class='row'>
+            <div class="row align-self-md-center">
+            
+                </div>
+        <div class='col-sm-5'>
+            <form method='POST' action='/pantry'>
+                {% include 'partials/pantry_form.html' %}
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -1,46 +1,29 @@
+{% extends 'base.html' %}
 
-<!doctype html>
-<html>
-<head>
-    <meta charset='utf-8'>
-    <title>Pantry</title>
-    <!-- Latest compiled and minified CSS -->
-    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
-    <link rel='stylesheet' href='https://bootswatch.com/4/cyborg/bootstrap.min.css'>
-</head>
-<body>
-    <div class='container'>
-        
-    {% include 'partials/navbar.html' %}
-    {% block body %}{% endblock %}
-    </div>
-    <div class='row'>
+    {% block body %}
             {% for item in pantry %}
-                <div class='col-md-3'>
-                    <h1><a href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
-                    <p><img src="{{ item.image }}" alt="No Image." width="200" height="200"></p>
-                    <h2>${{ item.price }}</h2>
-                </div>
+            <div class='row'>
+                <div class="card text-white bg-primary mb-3" style="max-width: 20rem;"><center>
+                        <div class="card-header">
+                                   <h1 ><a style="color: white;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
+                                   <h3 class="card-subtitle text-muted">{{ item.type }}</h3>                       
+                        </div>
+                        <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                        <div class="card-body">
+                        <div class="col">
+                          <h4 class="card-title">Amount: {{ item.amount }}
+                              <div class="form-group">
+                                <button type="submit" formaction="/pantry/{{ item._id }}/edit" class="btn btn-danger btn-lg btn-block">Edit Amount</button>
+                            </div>
+                            </div></h4>
+                          <p class="card-text">{{ item.description }}</p>
+                          <form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
+                            <button type='submit' class="btn btn-secondary btn-lg btn-block">Add to Ingredients</button>
+                          </center>
+                        </div>
+                      </div>
             {% endfor %}
-        </div>
- 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        </div> 
+    {% endblock %}
 
 
-
-
-
-
-
-
-
-
-    <!-- Footer -->
-<footer class='page-footer font-small blue pt-4'>
-        
-    </footer>
-</body>
-</html>

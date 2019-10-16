@@ -10,6 +10,9 @@
                 <h1><a href='pantry/cart/{{ item._id }}'>{{ item.name }}</a></h1>
                 <p><img src="{{ item.image }}" alt="No Image Found" width="50" height="50"></p>
                 <h2>${{ item.price }}</h2>
+                <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
+                    <button type='submit' class="btn btn-primary">Add to Cart</button>
+                </form></p>
             </div>
         {% endfor %}
     </div>

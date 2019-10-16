@@ -6,7 +6,7 @@ import os
 
 app = Flask(__name__)
 
-host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/contractor')
+host = os.environ.get('MONGODB_URI', 'mongodb://localhost:27017/Contractor')
 
 client = MongoClient(host=f'{host}?retryWrites=false')  
 db = client.get_default_database()
@@ -30,17 +30,15 @@ def pantry_submit():
     item = {
         "name": request.form.get('name'),
         "image": request.form.get('image'),
-        "price": request.form.get('price'),
-        "description and quantity": request.form.get('description'),
-        'created_at': datetime.now()
+        "description": request.form.get('description'),
+        "favorite food": request.form.get('favorite'),
+        "type": request.form.get('type'),
+        "amount": request.form.get('amount'),
+        "expiration": request.form.get('expiration')
     }
     print(item)
     item_id = pantry.insert_one(item).inserted_id
     return redirect(url_for('pantry_show', item_id=item_id))
-
-# @app.route('/pantry', methods=['GET'])
-# def pantry_homepage():
-#         return render_template('pantry_index.html',item_id=item_id)
 
 
 @app.route('/pantry/<item_id>')
@@ -59,11 +57,13 @@ def pantry_edit(item_id):
 def pantry_update(item_id):
     """Submit an edited item."""
     updated_item = {
-        "name": request.form['name'],
-        "image": request.form['image'],
-        "price": request.form['price'],
-        "description and quantity": request.form['description'],
-        'created_at': datetime.now()
+        "name": request.form.get('name'),
+        "image": request.form.get('image'),
+        "description": request.form.get('description'),
+        "favorite food": request.form.get('favorite'),
+        "type": request.form.get('type'),
+        "amount": request.form.get('amount'),
+        "expiration": request.form.get('expiration')
     }
     pantry.update_one(
         {'_id': ObjectId(item_id)},
