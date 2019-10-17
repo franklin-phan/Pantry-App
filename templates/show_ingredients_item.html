@@ -1,17 +1,17 @@
 
 {% extends 'base.html' %}
 
-{% block title %}Cart{% endblock %}
+{% block title %}Ingredients{% endblock %}
 
 {% block body %}
     <a href='/'>Back to Home</a>
     <div class='row'>
         <div class='col-sm-6 col-sm-offset-3'>
             <h1>{{ item.name }}</h1>
-            <img src="{{ cart_item.image }}" alt="Item Image" width="350" height="350">
+            <img style="height: 250px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
             <h2>${{ item.price }}</h2>
 
-            <p><form method='POST' action='/cart/{{ cart_item._id }}/delete'>
+            <p><form method='POST' action='/ingredients/{{ ingredients_item._id }}/delete'>
                 <button type='submit'>Delete</button>
             </form></p>
         </div>

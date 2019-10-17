@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 
     {% block body %}
+    <div class="jumbotron">
+        <center><h1 class="display-5">Welcome to Your Pantry!</h1>
+        <p class="lead">The virtual pantry will track the amount, nutrition, and expiration date of every item in a user’s pantry.<br> The Pantry can make recipes from the ingredients that you pick.</p></center>
+        </p>
+      </div>
+      <!-- <div class ="row">
+      <div class="card border-primary mb-3" style="max-width: 40rem;">
+          <div class="card-header">Food fact of the Day</div>
+          <div class="card-body">
+            <p class="card-text">{{fact}}</p>
+          </div>
+        </div>
+      <div class="card border-primary mb-3" style="max-width: 40rem;">
+          <div class="card-header">Food Joke of the Day</div>
+          <div class="card-body">
+            <p class="card-text">{{joke}}</p>
+          </div>
+        </div>
+      </div> -->
     <div class="container-fluid">
       <div class="row">
-            {% for item in pantry %}
+        {% for item in pantry %}
+        
         <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
           <center>
                   <div class="card-header">
@@ -13,17 +33,17 @@
                       <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
                         <div class="card-body">
                           <div class="col">
-                            <h4 class="card-title">Amount: {{ item.amount }}</h4>
-                              <div class="form-group">
-                                <button type="submit" formaction="/pantry/{{ item._id }}/edit" class="btn btn-danger btn-lg btn-block">Edit Amount</button>
-                              </div>
+                            <h4 class="card-title">{{ item.description }}</h4>
                           </div>
-
-                          <p class="card-text">{{ item.description }}</p>
-
-                          <form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
-                            <button type='submit' class="btn btn-secondary btn-lg btn-block">Add to Ingredients</button>
-                        </div>
+                          <div class="form-group">
+                              <form action="/pantry/{{ item._id }}/edit_amount">
+                              <button type="submit" class="btn btn-danger btn-sm">Amount: {{ item.amount }}</button>
+                              </form>
+                          </div>
+                              <form method='POST' action='/pantry/{{ item._id }}/add-to-ingredients'>
+                                <button type='submit' class="btn btn-secondary btn-lg btn-block">Add to Ingredients</button>
+                              </form>
+                          </div>
           </center>
         </div>
         {% if loop.index % 3 == 0 %}

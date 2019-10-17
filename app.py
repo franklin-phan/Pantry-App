@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for
+import requests
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+import json
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = Flask(__name__)
 
@@ -12,11 +17,27 @@ client = MongoClient(host=f'{host}?retryWrites=false')
 db = client.get_default_database()
 pantry = db.pantry
 item = db.item
-cart = db.cart
+ingredients = db.ingredients
+
+
+spoon_apiKey = os.getenv("spoonacular_API_KEY")
+
 #Return pantry
 @app.route('/')
 def pantry_index():
     """Show all pantry items."""
+
+    # r = requests.get("https://api.spoonacular.com/food/jokes/random?apiKey=" + apikey)
+    # r2 = requests.get("https://api.spoonacular.com/food/trivia/random?apiKey=" + apikey)
+
+    # if r.status_code == 200:
+    #     joke = json.loads(r.content)['text']
+    # else:
+    #     joke = None
+    # if r2.status_code == 200:
+    #     fact = json.loads(r2.content)['text']
+    # else:
+    #     fact = None
     return render_template('pantry_index.html', pantry=pantry.find())
 
 @app.route('/pantry/new')
@@ -53,6 +74,12 @@ def pantry_edit(item_id):
     item = pantry.find_one({'_id': ObjectId(item_id)})
     return render_template('pantry_edit.html', item=item, title='Edit Pantry Item')
 
+@app.route('/pantry/<item_id>/edit_amount')
+def panty_edit_amount(item_id):
+    """Edit amount for a single pantry item"""
+    item = pantry.find_one({'_id': ObjectId(item_id)})
+    return render_template('pantry_edit_amount.html', item=item, title='Edit Pantry Item amount')
+
 @app.route('/pantry/<item_id>', methods=['POST'])
 def pantry_update(item_id):
     """Submit an edited item."""
@@ -75,52 +102,81 @@ def pantry_delete(item_id):
     """Delete one pantry item."""
     pantry.delete_one({'_id': ObjectId(item_id)})
     return redirect(url_for('pantry_index'))
-#Shows cart
-@app.route("/pantry/cart")
-def cart_show():
-    return render_template("show_cart.html", cart=cart.find())
+#Shows ingredients
+@app.route("/pantry/ingredients")
+def ingredients_show():
+    return render_template("show_ingredients.html", ingredients=ingredients.find())
 
-#Shows item in user's cart
-@app.route("/pantry/cart/<cart_item_id>")
-def cart_item_show(cart_item_id):
-    cart_item = cart.find_one({"_id": ObjectId(cart_item_id)})
-    return render_template("cart_item_show.html", cart_item=cart_item)
+#Shows item in user's ingredients
+@app.route("/pantry/ingredients/<ingredients_item_id>")
+def ingredients_item_show(ingredients_item_id):
+    ingredients_item = ingredients.find_one({"_id": ObjectId(ingredients_item_id)})
+    return render_template("ingredients_item_show.html", ingredients_item=ingredients_item)
 
-#Delete an item from cart
-@app.route("/pantry/cart/<cart_item_id>/delete", methods=["POST"])
-def cart_delete(cart_item_id):
-    cart.delete_one({"_id": ObjectId(cart_item_id)})
-    return redirect(url_for("show_cart"))
+#Delete an item from ingredients
+@app.route("/pantry/ingredients/<ingredients_item_id>/delete", methods=["POST"])
+def ingredients_delete(ingredients_item_id):
+    ingredients.delete_one({"_id": ObjectId(ingredients_item_id)})
+    return redirect(url_for("show_ingredients"))
 
-#Delete all items in cart
-@app.route("/pantry/cart/destroy")
-def cart_destroy():
-    for cart_item in cart.find():
-        cart.delete_one({"_id": ObjectId(cart_item["_id"])})
-    return redirect(url_for("show_cart"))
+#Delete all items in ingredients
+@app.route("/pantry/ingredients/destroy")
+def ingredients_destroy():
+    for ingredients_item in ingredients.find():
+        ingredients.delete_one({"_id": ObjectId(ingredients_item["_id"])})
+    return redirect(url_for("ingredients_show"))
 
-#Cart Checkout
-@app.route("/pantry/cart/checkout")
-def cart_checkout():
-    total = 0
-    for item in cart.find():
-        total += int(item["price"])
-    print("$" + str(total))
-    return redirect(url_for("cart_destroy"))
+#ingredients Checkout
+@app.route("/pantry/ingredients/recipes")
+def show_recipes():
+    ingredient_list = ingredients.find()
+    ingredient_names = []
+    for ing in ingredient_list:
+        ingredient_names.append(ing["name"])
+    print (ingredient_names)
+    ing_string = ""
+    for ing in ingredient_names:
+        #removes spaces in item names to search recipes
+        if ing.count(" ") > 0:
+            ing_list = ing.split()
+            ing = ""
+            for i in ing_list:
+                ing += i
+        ing_string += ing + ","
 
-#Add item to cart
-@app.route('/pantry/<cart_item_id>/add-to-cart', methods=['POST'])
-def add_to_cart(cart_item_id):
-    cart_item = pantry.find_one({"_id": ObjectId(cart_item_id)})
-    # for _ in range(int(request.form.get("quant"))):
-    #     new_item = {
-    #         "food name": cart_item["name"],
-    #         "image": cart_item["image"],
-    #         "price": cart_item["price"],
-    #         "description and quantity": cart_item["description"]
-    #         }
-    cart.insert_one(cart_item)
-    return redirect(url_for('cart_show'))
+    #getting recipe JSON data
+    r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=4&apiKey=" + spoon_apiKey)
+    
+    print(r3)
+    if r3.status_code == 200:
+        recipes = json.loads(r3.content)
+    else:
+        recipes = None
+    print(recipes)
+    recipes_description = []
+    for recipe in recipes:
+        r4 = requests.get("https://api.spoonacular.com/recipes/"+str(recipe["id"])+"/summary?apiKey=" + spoon_apiKey)
+
+        if r4.status_code == 200:
+            recipes_description.append(json.loads(r4.content)["summary"])
+        else:
+            recipes_description = None
+    return render_template("recipes.html", recipes=recipes,recipes_description=recipes_description)
+
+
+#Add item to ingredients
+@app.route('/pantry/<ingredients_item_id>/add-to-ingredients', methods=['POST'])
+def add_to_ingredients(ingredients_item_id):
+    ingredients_item = pantry.find_one({"_id": ObjectId(ingredients_item_id)})
+    new_item = {
+        "name": ingredients_item['name'],
+        "image": ingredients_item['image'],
+        "type": ingredients_item['type'],
+        "amount": ingredients_item['amount'],
+        "expiration": ingredients_item['expiration']
+        }
+    ingredients.insert_one(new_item)
+    return redirect(url_for('ingredients_show'))
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div class="container">
+        {% for recipe in recipes %}
+        <div class="row">
+            <div class="col">
+                <div class="card border-primary mb-3" style="max-width: 30rem;">
+                    <div class="card-header">{{recipe.title}}
+                    </div>
+                        <div class="card-body">
+                            <img style="height: 200px; width: 100%; display: block;" src="{{ recipe.image}}" alt="No image">
+                                <p class="card-text">{{recipes_description[loop.index-1]|striptags}}</p>
+                        </div>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

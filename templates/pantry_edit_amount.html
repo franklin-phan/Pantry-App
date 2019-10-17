@@ -1,0 +1,45 @@
+<!-- templates/pantry_edit_amount.html -->
+{% extends 'base.html' %}
+
+{% block title %}Edit Item Amount{% endblock %}
+
+{% block body %}
+
+<div class='row'>
+    <div class='col-sm-6 col-sm-offset-3'>
+        <form method='POST' action='/pantry/{{item._id}}'>
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
+                    <center>
+                            <div class="card-header">
+                              <h1 ><a style="color: white;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
+                              <h3 class="card-subtitle text-muted">{{ item.type }}</h3>                       
+                            </div>
+                                <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                                  <div class="card-body">
+                                    <div class="col">
+                                      <h4 class="card-title">{{ item.description }}</h4>
+                                    </div>
+                                    <!-- AMOUNT -->
+                                <div class="form-group">
+                                        <label for="item-amount">Amount Left:</label>
+                                        <select id="item-amount" class="form-control" name="amount" value="{{ item.amount}}">
+                                        <option>Open Amount Menu</option>
+                                        <option>Full</option>
+                                        <option>More than half</option>
+                                        <option>Half</option>
+                                        <option>Less than half</option>
+                                        <option>Almost empty</option>
+                                        </select>
+                                    </div>
+                                </form>
+                                <div class="form-group">
+                                        <button type="submit" formaction="/" formmethod="GET" class="btn btn-danger">Cancel</button>
+                                        <button type="submit"  class="btn btn-success">Update Amount</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </div> 
+                    </center>
+                  </div>
+
+{% endblock %}
