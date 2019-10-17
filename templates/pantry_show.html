@@ -17,6 +17,7 @@
               <li class="list-group-item">Amount: {{ item.amount }}</li>
               <li class="list-group-item">Expiration Date: {{ item.expiration }}</li>
             </ul>
+            <center>
             <div class="btn-group" role="group" aria-label="Basic example">
                     <p><form action='/'>
                         <button type='submit' class="btn btn-secondary">Back to home</button>
@@ -30,6 +31,7 @@
                     <p><form method='POST' action='/pantry/{{ item._id }}/add-to-cart'>
                         <button type='submit' class="btn btn-secondary">Add to Cart</button>
                     </form></p>
+                  </center>
                 </center>
             </div>
           </div>

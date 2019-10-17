@@ -43,7 +43,7 @@ def pantry_index():
 @app.route('/pantry/new')
 def pantry_new():
     """Create a new pantry item."""
-    return render_template('pantry_new.html', item={}, title='New Item')
+    return render_template('pantry_new.html', item={}, title='New Pantry Item')
 
 @app.route('/pantry', methods=['POST'])
 def pantry_submit():
@@ -115,13 +115,13 @@ def ingredients_item_show(ingredients_item_id):
 
 #Delete an item from ingredients
 @app.route("/pantry/ingredients/<ingredients_item_id>/delete", methods=["POST"])
-def ingredients_delete(ingredients_item_id):
-    ingredients.delete_one({"_id": ObjectId(ingredients_item_id)})
-    return redirect(url_for("show_ingredients"))
+def ingredients_delete_one(ingredients_item_id):
+    ingredients.delete_one({'_id': ObjectId(ingredients_item_id)})
+    return redirect(url_for("ingredients_show"))
 
 #Delete all items in ingredients
-@app.route("/pantry/ingredients/destroy")
-def ingredients_destroy():
+@app.route("/pantry/ingredients/delete")
+def ingredients_delete():
     for ingredients_item in ingredients.find():
         ingredients.delete_one({"_id": ObjectId(ingredients_item["_id"])})
     return redirect(url_for("ingredients_show"))
@@ -145,7 +145,7 @@ def show_recipes():
         ing_string += ing + ","
 
     #getting recipe JSON data
-    r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=4&apiKey=" + spoon_apiKey)
+    r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=9&apiKey=" + spoon_apiKey)
     
     print(r3)
     if r3.status_code == 200:

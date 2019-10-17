@@ -4,26 +4,39 @@
 {% block title %}Ingredients{% endblock %}
 
 {% block body %}
-    <div class='row'>
-        {% for item in ingredients %}
-        <div class="card border-primary mb-3" style="max-width: 20rem;"><center>
-                <div class="card-header">{{ item.type }}</div>
-                <div class="card-body">
-                        <h1 ><a style="color: grey;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
-                  <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
-                  <p class="card-text">{{ item.expiration}}</p>
-                </div>
-                <form action="/pantry/ingredients/destroy">
-                    <button type="submit" class="btn btn-primary">Remove Ingredient</button>
-                </form>
-              </center></div>
-        {% endfor %}
-    </div>
-    <form action="/pantry/ingredients/destroy">
-        <button type="submit" class="btn btn-primary">Empty Ingredients</button>
-    </form>
+<div class="jumbotron">
+        <center><h2 class="display-3">Welcome to Your Ingredients</h2>
+        <p class="lead">Here you can put together ingredients you want to cook with and Pantry will find recipes based on those ingredients..</p></center>
+        <hr class="my-4">
+        <div class='row'>
+                {% for item in ingredients %}
+                <div class="card border-primary mb-3" style="max-width: 20rem;"><center>
+                        <div class="card-header">{{ item.type }}</div>
+                        <div class="card-body">
+                                <h2 ><a style="color: grey;" >{{ item.name }}</a></h2>
+                          <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                          <p class="card-text">{{ item.expiration}}</p>
+                        </div>
+                        <form action="/pantry/ingredients/{{ item._id }}/delete" method="POST">
+                            <button type="post" class="btn btn-primary">Remove Ingredient</button>
+                        </form>
+                      </center></div>
+                {% endfor %}
+            </div>
+            <center>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        <form action="/">
+                            <button type="submit" class="btn btn-primary">Back to Pantry</button>
+                        </form>
+                        <form action="/pantry/ingredients/delete">
+                            <button type="submit" class="btn btn-danger">Empty Ingredients</button>
+                        </form>
+                
+                        <form action="/pantry/ingredients/recipes">
+                            <button type="submit" class="btn btn-success">Find Recipes</button>
+                        </form>
+                    </div>
+                </center>
+      </div>
 
-    <form action="/pantry/ingredients/recipes">
-        <button type="submit" class="btn btn-primary">Find Recipes</button>
-    </form>
 {% endblock %}

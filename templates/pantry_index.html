@@ -36,8 +36,7 @@
                             <h4 class="card-title">{{ item.description }}</h4>
                           </div>
                           <div class="form-group">
-                              <form action="/pantry/{{ item._id }}/edit_amount">
-                              <button type="submit" class="btn btn-danger btn-sm">Amount: {{ item.amount }}</button>
+                              <button type="button" class="btn btn-danger btn-sm">Amount: {{ item.amount }}</button>
                               </form>
                           </div>
                               <form method='POST' action='/pantry/{{ item._id }}/add-to-ingredients'>
@@ -46,10 +45,14 @@
                           </div>
           </center>
         </div>
-        {% if loop.index % 3 == 0 %}
+        {% if loop.index % 4 == 0 %}
         <div class="w-100"></div>
         {% endif %}
         {% endfor %}
       </div>
     </div>
+    <p><form action='/'><center>
+        <button type='submit' class="btn btn-primary">Back to Top</button>
+    </center></form></p>
     {% endblock %}
+

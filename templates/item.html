@@ -1,26 +1,30 @@
 <div class="container-fluid">
     <div class="row">
-      {% for item in pantry %}
-      
-      <div class="card text-white bg-primary mb-3" style="max-width: 20rem;">
-        <center>
-                <div class="card-header">
-                  <h1 ><a style="color: white;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
-                  <h3 class="card-subtitle text-muted">{{ item.type }}</h3>                       
-                </div>
-                    <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
-                      <div class="card-body">
-                        <div class="col">
-                          <h4 class="card-title">{{ item.description }}</h4>
-                        </div>
-                        <div class="form-group">
-                            <form action="/pantry/{{ item._id }}/edit_amount">
-                            <button type="submit" class="btn btn-danger btn-sm">Amount: {{ item.amount }}</button>
-                          </form>
-                          </div>
-                          <form method='POST' action='/pantry/{{ item._id }}/add-to-ingredients'>
-                            <button type='submit' class="btn btn-secondary btn-lg btn-block">Add to Ingredients</button>
-                        </form>
+          {% for item in pantry %}
+                <div class="card border-primary mb-3" style="max-width: 20rem;">
+                <center>
+                      <div class="card-header">
+                            <h1 ><a style="color: grey;" href='/pantry/{{ item._id }}'>{{ item.name }}</a></h1>
+                            <h3 class="card-subtitle text-muted">{{ item.type }}</h3>                       
                       </div>
-        </center>
+                      <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                      <div class="card-body">
+                            <div class="col">
+                      <h4 class="card-title">{{ item.description }}</h4>
+                            </div>
+                      </div>
+                      <div class="form-group">
+                            <button type="button" class="btn btn-danger btn-sm">Amount: {{ item.amount }}</button>                           
+                      </div>
+                      <form method='POST' action='/pantry/{{ item._id }}/add-to-ingredients'>
+                            <button type='submit' class="btn btn-primary btn-lg btn-block">Add to Ingredients</button>
+                      </form>
+                  </div>
+                </center>
       </div>
+      {% if loop.index % 4 == 0 %}
+      <div class="w-100"></div>
+      {% endif %}
+              {% endfor %}
+      </div>
+  </div>

@@ -1,38 +1,38 @@
 <fieldset>
-        <legend>{{title}}</legend>
+        <legend>New Pantry Item</legend>
         <!-- NAME -->
         <div class="form-group">
                 <div class="form-group">
                         <label for="item-name">Food Name</label>
                         <input id="item-name" type="text" class="form-control" name="name" value="{{ item.name }}"/>
-                      </div>
-                    </div>
+                </div>
+        </div>
         
         <!-- IMAGE LINK -->
         <div class="form-group">
                 <div class="form-group">
                 <label for="item-image">Image Link</label>
-                        <input id="item-image" type="text" class="form-control" name="image" value="{{ item.link }}"/>
-                      </div>
-                    </div>
+                        <input id="item-image" type="text" class="form-control" name="image" value="{{ item.image }}"/>
+                </div>
+        </div>
         <!-- FOOD DESCRIPTION -->
         <div class="form-group">
                 <div class="form-group">
                     <label for="item-description">Food Description</label>
-                    <textarea class="form-control" id="item-description" name="description" rows="3"></textarea>
+                    <textarea class="form-control" id="item-description" name="description" rows="3" value="{{ item.description }}"></textarea>
                 </div>
             </div>
         <!-- FAVORITE FOOD -->
         <div class="form-group">
                 <div class="custom-control custom-checkbox">
                   <input type="checkbox" class="custom-control-input" id="customCheck1" checked="" >
-                  <label id="item-favorite" class="custom-control-label" for="customCheck1" name="favorite" value={{item.favorite}}>This is one of my favorite foods.</label>
+                  <label id="item-favorite" class="custom-control-label" for="customCheck1" name="favorite" value="{{item['favorite food']}}">This is one of my favorite foods.</label>
                 </div>
-            </div>
+        </div>
         <!-- FOOD TYPE -->
         <div class="form-group">
           <label for="item-type">Food Type</label>
-          <select id="item-type" class="form-control" name= "type" value="{{ item.food_type }}">
+          <select id="item-type" class="form-control" name= "type">
             <option>Open Food Type Menu</option>
             <option>Snacks and Candy</option>
             <option>Frozen/Instant</option>
@@ -40,7 +40,7 @@
             <option>Bread and Bakery</option>
             <option>Meat</option>
             <option>Eggs and Dairy</option>
-            <option>Fruits and Vegetables</option>
+            <option>Fruits and Veggies</option>
             <option>Seasoning/Oil</option>
           </select>
         </div>
@@ -61,12 +61,12 @@
         <div class="form-group">
                 <div class="form-group">
                         <label for="item-date">Expiration Date</label>
-                        <input id="item-date" type="text" class="form-control" name="expiration" value="{{item.date}}">
+                        <input id="item-date" type="text" class="form-control" name="expiration" value="{{item.expiration}}">
                 </div>
         </div>
         <!-- BUTTON -->
         <div class="form-group">
-            <button type="submit" formaction="/pantry" formmethod="GET" class="btn btn-danger">Cancel</button>
+            <button type="submit" formaction="/" formmethod="GET" class="btn btn-danger">Cancel</button>
             <button type="submit" class="btn btn-success">Add to My Pantry</button>
         </div>
     </fieldset>
