@@ -18,6 +18,7 @@ db = client.get_default_database()
 pantry = db.pantry
 item = db.item
 ingredients = db.ingredients
+recipes = db.recipes
 
 
 spoon_apiKey = os.getenv("spoonacular_API_KEY")
@@ -27,18 +28,18 @@ spoon_apiKey = os.getenv("spoonacular_API_KEY")
 def pantry_index():
     """Show all pantry items."""
 
-    # r = requests.get("https://api.spoonacular.com/food/jokes/random?apiKey=" + apikey)
-    # r2 = requests.get("https://api.spoonacular.com/food/trivia/random?apiKey=" + apikey)
+    r = requests.get("https://api.spoonacular.com/food/jokes/random?apiKey=" + spoon_apiKey)
+    r2 = requests.get("https://api.spoonacular.com/food/trivia/random?apiKey=" + spoon_apiKey)
 
-    # if r.status_code == 200:
-    #     joke = json.loads(r.content)['text']
-    # else:
-    #     joke = None
-    # if r2.status_code == 200:
-    #     fact = json.loads(r2.content)['text']
-    # else:
-    #     fact = None
-    return render_template('pantry_index.html', pantry=pantry.find())
+    if r.status_code == 200:
+        joke = json.loads(r.content)['text']
+    else:
+        joke = None
+    if r2.status_code == 200:
+        fact = json.loads(r2.content)['text']
+    else:
+        fact = None
+    return render_template('pantry_index.html', pantry=pantry.find(),fact=fact,joke=joke)
 
 @app.route('/pantry/new')
 def pantry_new():
@@ -102,6 +103,7 @@ def pantry_delete(item_id):
     """Delete one pantry item."""
     pantry.delete_one({'_id': ObjectId(item_id)})
     return redirect(url_for('pantry_index'))
+
 #Shows ingredients
 @app.route("/pantry/ingredients")
 def ingredients_show():
@@ -122,11 +124,10 @@ def ingredients_delete_one(ingredients_item_id):
 #Delete all items in ingredients
 @app.route("/pantry/ingredients/delete")
 def ingredients_delete():
-    for ingredients_item in ingredients.find():
-        ingredients.delete_one({"_id": ObjectId(ingredients_item["_id"])})
+    ingredients.delete_one({"_id": ObjectId(ingredients_item["_id"])})
     return redirect(url_for("ingredients_show"))
 
-#ingredients Checkout
+#ingredients recipe find
 @app.route("/pantry/ingredients/recipes")
 def show_recipes():
     ingredient_list = ingredients.find()
@@ -145,23 +146,42 @@ def show_recipes():
         ing_string += ing + ","
 
     #getting recipe JSON data
-    r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=9&apiKey=" + spoon_apiKey)
-    
-    print(r3)
+    r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=8&apiKey=" + spoon_apiKey)
     if r3.status_code == 200:
         recipes = json.loads(r3.content)
     else:
         recipes = None
     print(recipes)
     recipes_description = []
+    recipes_URL = []
     for recipe in recipes:
         r4 = requests.get("https://api.spoonacular.com/recipes/"+str(recipe["id"])+"/summary?apiKey=" + spoon_apiKey)
-
         if r4.status_code == 200:
             recipes_description.append(json.loads(r4.content)["summary"])
         else:
             recipes_description = None
-    return render_template("recipes.html", recipes=recipes,recipes_description=recipes_description)
+
+    for recipe in recipes:
+        r5 = requests.get("https://api.spoonacular.com/recipes/"+str(recipe["id"])+"/information?includeNutrition=false&apiKey=" + spoon_apiKey)
+        if r5.status_code == 200:
+            recipes_URL.append(json.loads(r5.content)["sourceUrl"])
+        else:
+            recipes_URL = None
+    return render_template("recipes.html", recipes=recipes,recipes_description=recipes_description,recipes_URL=recipes_URL)
+
+# #addd recipe to recipe collection
+# @app.route("/pantry/saved-recipes", methods=['POST', 'GET'])
+# def saved_recipes():
+#     recipe_item = pantry.find_one({"_id": ObjectId(recipe_item_id)})
+#     new_recipe = {
+#         "name": recipe.title,
+#         "image":recipe.image,
+#         "description": recipes_description[loop.index-1],
+#         "link": recipes_URL[loop.index-1]
+#         }
+#     print(new_recipe)
+#     recipes.insert_one(new_recipe)
+#     return render_template("saved_recipes.html")
 
 
 #Add item to ingredients

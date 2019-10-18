@@ -3,23 +3,24 @@
     {% block body %}
     <div class="jumbotron">
         <center><h1 class="display-5">Welcome to Your Pantry!</h1>
-        <p class="lead">The virtual pantry will track the amount, nutrition, and expiration date of every item in a user’s pantry.<br> The Pantry can make recipes from the ingredients that you pick.</p></center>
+        <p class="lead">The virtual pantry will track the amount and expiration date of every item in your pantry.<br> The Pantry can make recipes from the ingredients that you pick.</p></center>
         </p>
+        <div class ="row">
+            <div class="card border-primary mb-3" style="max-width: 40rem;">
+                <div class="card-header">Food fact of the Day</div>
+                <div class="card-body">
+                  <p class="card-text">{{fact}}</p>
+                </div>
+              </div>
+            <div class="card border-primary mb-3" style="max-width: 40rem;">
+                <div class="card-header">Food Joke of the Day</div>
+                <div class="card-body">
+                  <p class="card-text">{{joke}}</p>
+                </div>
+              </div>
+            </div>
       </div>
-      <!-- <div class ="row">
-      <div class="card border-primary mb-3" style="max-width: 40rem;">
-          <div class="card-header">Food fact of the Day</div>
-          <div class="card-body">
-            <p class="card-text">{{fact}}</p>
-          </div>
-        </div>
-      <div class="card border-primary mb-3" style="max-width: 40rem;">
-          <div class="card-header">Food Joke of the Day</div>
-          <div class="card-body">
-            <p class="card-text">{{joke}}</p>
-          </div>
-        </div>
-      </div> -->
+
     <div class="container-fluid">
       <div class="row">
         {% for item in pantry %}

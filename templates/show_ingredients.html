@@ -6,7 +6,7 @@
 {% block body %}
 <div class="jumbotron">
         <center><h2 class="display-3">Welcome to Your Ingredients</h2>
-        <p class="lead">Here you can put together ingredients you want to cook with and Pantry will find recipes based on those ingredients..</p></center>
+        <p class="lead">Here you can put together ingredients you want to cook with and Pantry will find recipes based on those ingredients.</p></center>
         <hr class="my-4">
         <div class='row'>
                 {% for item in ingredients %}
@@ -14,8 +14,8 @@
                         <div class="card-header">{{ item.type }}</div>
                         <div class="card-body">
                                 <h2 ><a style="color: grey;" >{{ item.name }}</a></h2>
-                          <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
-                          <p class="card-text">{{ item.expiration}}</p>
+                          <img style="height: 180px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
+                          <p class="card-text"><h4>Exp. Date: {{ item.expiration}}</h4></p>
                         </div>
                         <form action="/pantry/ingredients/{{ item._id }}/delete" method="POST">
                             <button type="post" class="btn btn-primary">Remove Ingredient</button>

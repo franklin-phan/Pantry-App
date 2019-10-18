@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
+
+    <div class="container-fluid">
+            <div class="row">
         {% for recipe in recipes %}
-        <div class="row">
-            <div class="col">
                 <div class="card border-primary mb-3" style="max-width: 30rem;">
-                    <div class="card-header">{{recipe.title}}
+                    <div class="card-header"><center>{{recipe.title}}</center>
+                        <a href="{{recipes_URL[loop.index-1]}}">
+                            </a>
                     </div>
                         <div class="card-body">
                             <img style="height: 200px; width: 100%; display: block;" src="{{ recipe.image}}" alt="No image">
                                 <p class="card-text">{{recipes_description[loop.index-1]|striptags}}</p>
-                        </div>
+                                <a href="{{recipes_URL[loop.index-1]}}">
+                                    <button type="button" class="btn btn-success row align-items-end">View Recipe</button>
+                                </a>
             </div>
             </div>
-        </div>
+        {% if loop.index % 4 == 0 %}
+        <div class="w-100"></div>
+        {% endif %}
         {% endfor %}
+    </div> 
+    </div>
     </div>
 {% endblock %}
