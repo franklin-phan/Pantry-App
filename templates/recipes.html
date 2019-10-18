@@ -1,20 +1,32 @@
 {% extends 'base.html' %}
 
 {% block body %}
-
+<center>
     <div class="container-fluid">
-            <div class="row">
+            <div class="row justify-content-center">
         {% for recipe in recipes %}
-                <div class="card border-primary mb-3" style="max-width: 30rem;">
+                <div class="card border-primary mb-3" style="max-width: 30rem; margin: 5px;">
                     <div class="card-header"><center>{{recipe.title}}</center>
                         <a href="{{recipes_URL[loop.index-1]}}">
                             </a>
                     </div>
                         <div class="card-body">
-                            <img style="height: 200px; width: 100%; display: block;" src="{{ recipe.image}}" alt="No image">
+                            <img style="height: 200px; width: 100%; display: block;" src="{{ recipe.image }}" alt="No image">
                                 <p class="card-text">{{recipes_description[loop.index-1]|striptags}}</p>
+                                <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{calories[loop.index-1]}} Calories</div>
+                                      </div>
+                                      <div class="progress">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{calories[loop.index-1]}} Carbs</div>
+                                      </div>
+                                      <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">{{fat[loop.index-1]}} Fat</div>
+                                      </div>
+                                      <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 100%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1000">{{protein[loop.index-1]}} Protein</div>
+                                      </div>
                                 <a href="{{recipes_URL[loop.index-1]}}">
-                                    <button type="button" class="btn btn-success row align-items-end">View Recipe</button>
+                                    <button type="button" style="justify-self: end" class="btn btn-success row align-items-end">View Recipe</button>
                                 </a>
             </div>
             </div>
@@ -25,4 +37,5 @@
     </div> 
     </div>
     </div>
+</center>
 {% endblock %}

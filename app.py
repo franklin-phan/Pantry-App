@@ -143,7 +143,7 @@ def show_recipes():
             for i in ing_list:
                 ing += i
         ing_string += ing + ","
-
+    
     #getting recipe JSON data
     r3 = requests.get("https://api.spoonacular.com/recipes/findByIngredients?ingredients="+ing_string+"&number=8&apiKey=" + spoon_apiKey)
     if r3.status_code == 200:
@@ -151,8 +151,13 @@ def show_recipes():
     else:
         recipes = None
     print(recipes)
+
     recipes_description = []
     recipes_URL = []
+    calories = []
+    carbs = []
+    fat = []
+    protein = []
     for recipe in recipes:
         r4 = requests.get("https://api.spoonacular.com/recipes/"+str(recipe["id"])+"/summary?apiKey=" + spoon_apiKey)
         if r4.status_code == 200:
@@ -166,9 +171,24 @@ def show_recipes():
             recipes_URL.append(json.loads(r5.content)["sourceUrl"])
         else:
             recipes_URL = None
-    return render_template("recipes.html", recipes=recipes,recipes_description=recipes_description,recipes_URL=recipes_URL)
 
-# #addd recipe to recipe collection
+    for recipe in recipes:
+        r6 = requests.get("https://api.spoonacular.com/recipes/"+str(recipe["id"])+"/nutritionWidget.json?apiKey=" + spoon_apiKey)
+        if r6.status_code == 200:
+            calories.append(json.loads(r6.content)["calories"])
+            carbs.append(json.loads(r6.content)["carbs"])
+            fat.append(json.loads(r6.content)["fat"])
+            protein.append(json.loads(r6.content)["protein"])
+
+        else:
+            calories = None
+            carbs = None
+            fat = None
+            protein = None
+
+    return render_template("recipes.html", recipes=recipes,recipes_description=recipes_description,recipes_URL=recipes_URL,calories=calories,carbs=carbs,fat=fat,protein=protein)
+
+# #add recipe to recipe collection
 # @app.route("/pantry/saved-recipes", methods=['POST', 'GET'])
 # def saved_recipes():
 #     recipe_item = pantry.find_one({"_id": ObjectId(recipe_item_id)})
