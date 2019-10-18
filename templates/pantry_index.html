@@ -34,11 +34,11 @@
                       <img style="height: 200px; width: 100%; display: block;" src="{{ item.image }}" alt="No image">
                         <div class="card-body">
                           <div class="col">
-                            <h4 class="card-title">{{ item.description }}</h4>
-                            <h5 class="card-title">Exp. Date: {{ item.expiration }}</h5>
-                          </div>
                           <div class="form-group">
-                              <button type="button" class="btn btn-success btn-sm">Amount: {{ item.amount }}</button>
+                              <button type="button" class="btn btn-info btn-lg btn-block ">{{ item.description }}</button>
+                              </form>
+                          <div class="form-group">
+                              <button type="button" class="btn btn-success btn-lg btn-block "><h6>Amount: {{ item.amount }}<br>Exp. Date: {{ item.expiration }}</h6></button>
                               </form>
                           </div>
                               <form method='POST' action='/pantry/{{ item._id }}/add-to-ingredients'>
